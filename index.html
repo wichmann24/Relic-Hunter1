@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Relic Hunter — Exploração Arqueológica</title>
+<link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+<h1>⛏ RELIC HUNTER</h1>
+<div class="subtitle">Exploração Arqueológica com Algoritmos Clássicos</div>
+
+<div id="app">
+  <div id="left-panel">
+    <div id="game-canvas-wrap">
+      <canvas id="game-canvas"></canvas>
+      <canvas id="overlay-canvas"></canvas>
+      <div id="overlay-msg"><h2 id="omsg-title"></h2><p id="omsg-body"></p></div>
+    </div>
+
+    <div class="panel-box">
+      <div class="panel-title">Controles</div>
+      <div id="controls-hint">
+        <span><span class="kbd">↑↓←→</span> Mover</span>
+        <span><span class="kbd">E</span> Coletar relíquia</span>
+        <span><span class="kbd">T</span> Mostrar rota TSP</span>
+        <span><span class="kbd">B</span> BFS para saída</span>
+        <span><span class="kbd">K</span> Otimizar mochila</span>
+        <span><span class="kbd">R</span> Novo mapa</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="right-panel">
+    <div class="panel-box">
+      <div class="panel-title">Status do Explorador</div>
+      <div id="status-grid">
+        <div class="stat-item"><span class="stat-label">Relíquias</span><span class="stat-val" id="s-relics">0</span></div>
+        <div class="stat-item"><span class="stat-label">Pontos</span><span class="stat-val" id="s-score">0</span></div>
+        <div class="stat-item"><span class="stat-label">Passos</span><span class="stat-val" id="s-steps">0</span></div>
+        <div class="stat-item"><span class="stat-label">Peso</span><span class="stat-val" id="s-weight">0/15</span></div>
+      </div>
+    </div>
+
+    <div class="panel-box">
+      <div class="panel-title">Inventário <span style="font-size:0.65rem;color:var(--sand);">(clique p/ descartar)</span></div>
+      <div id="inv-grid"></div>
+      <div id="inv-weight">Peso: <span id="iw-val">0</span> / 15 kg</div>
+      <div class="btn-row">
+        <button class="btn" id="btn-tsp" title="Calcular rota TSP entre relíquias no mapa">Rota TSP</button>
+        <button class="btn" id="btn-bfs" title="BFS: caminho até a saída">Caminho BFS</button>
+        <button class="btn" id="btn-ks" title="Otimizar inventário com Knapsack">Mochila</button>
+      </div>
+    </div>
+
+    <div class="panel-box">
+      <div class="panel-title">Algoritmos Ativos</div>
+      <div id="algo-info">
+        <strong>TSP (Held-Karp / 2-opt):</strong> Calcula a rota ótima de coleta entre as relíquias do mapa.<br>
+        <strong>BFS:</strong> Encontra o menor caminho até a saída evitando muros.<br>
+        <strong>Knapsack 0/1:</strong> Decide os melhores itens para carregar dado o limite de peso.
+      </div>
+      <div id="tsp-result">Pressione T ou o botão para ver a rota TSP.</div>
+    </div>
+
+    <div class="panel-box">
+      <div class="panel-title">Legenda</div>
+      <div id="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#C8A96E"></div> Chão</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#4A3F35"></div> Parede</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#D4A017"></div> Relíquia</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#2980B9"></div> Jogador</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#5C8A3C"></div> Saída</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#8E44AD"></div> Rota TSP</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#C0392B"></div> Caminho BFS</div>
+      </div>
+    </div>
+
+    <div class="panel-box">
+      <div class="panel-title">Log</div>
+      <div id="log"><p>Bem-vindo, arqueólogo! Explore as ruínas e colete relíquias.</p></div>
+    </div>
+  </div>
+</div>
+
+<!-- Knapsack Modal -->
+<div id="knapsack-modal">
+  <div id="knapsack-box">
+    <h2>⚖ Otimizador de Mochila (Knapsack 0/1)</h2>
+    <p>Capacidade: <strong id="ks-cap">15 kg</strong>. O algoritmo escolhe a combinação de itens com maior valor total sem exceder o peso.</p>
+    <div id="knapsack-items"></div>
+    <div id="ks-result">Nenhum item para otimizar.</div>
+    <div class="btn-row">
+      <button class="btn" id="btn-ks-run" style="flex:2">Executar Knapsack DP</button>
+      <button class="btn" id="btn-ks-apply">Aplicar Seleção</button>
+      <button class="btn" id="btn-ks-close">Fechar</button>
+    </div>
+  </div>
+</div>
+
+<script src="src/constants.js"></script>
+<script src="src/algorithms/tsp.js"></script>
+<script src="src/algorithms/bfs.js"></script>
+<script src="src/algorithms/knapsack.js"></script>
+<script src="src/map.js"></script>
+<script src="src/render.js"></script>
+<script src="src/inventory.js"></script>
+<script src="src/game.js"></script>
+</body>
+</html>
